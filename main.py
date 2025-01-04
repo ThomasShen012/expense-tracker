@@ -200,7 +200,8 @@ async def update_expense(
         }
     )
 
-
-
+@app.get("/test")
+async def test_func():
+    return {"data": "testing gateway"}
 
 
