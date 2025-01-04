@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> {% block title %} All Expense {% endblock %} | TET </title>
+    <link rel="icon" type="image/png" href="/static/money-bags.png">
+</head>
+<style>
+    .sidenav {
+        height: 100%;
+        /* 100% Full-height */
+        width: 0;
+        /* 0 width - change this with JavaScript */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Stay on top */
+        top: 0;
+        /* Stay at the top */
+        left: 0;
+        background-color:black;
+        /* Black*/
+        overflow-x: hidden;
+        /* Disable horizontal scroll */
+        /*padding-top: 60px;*/
+        /* Place content 60px from the top */
+        transition: 0.5s;
+        /* 0.5 second transition effect to slide in the sidenav */
+    }
+
+    /* The navigation menu links */
+    .sidenav a {
+        margin-top: 5px;
+        padding: 8px;
+        text-decoration: none;
+        font-size:large;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+    /* When you mouse over the navigation links, change their color */
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+
+    /* Position and style the close button (top right corner) */
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        font-size: 30px;
+    
+    }
+
+    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 14px;}
+    }
+</style>
+<body>
+
+    <div class="sidenav" id="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <br><br>
+        <a href="/"> Home </a>
+        <a href="/add"> Add new expense </a>
+        <a href="/expenses"> Get all expense </a>
+        <a href="#about">Help</a>
+    </div>
+    <button type="button" onclick="openNav()"> Open sidebar </button>
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+<script>
+    
+    function openNav(){
+        document.getElementById("sidenav").style.width = "180px";
+        document.getElementById("content").style.marginLeft ="180px";
+    }
+
+    function closeNav(){
+        document.getElementById("sidenav").style.width = "0";
+        document.getElementById("content").style.marginLeft = "0";
+    }
+
+</script>
+
+</html>

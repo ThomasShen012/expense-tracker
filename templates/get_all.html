@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %} All Expenses {% endblock %}
+
+{% block content %}
+<style>
+    table, th, td{
+        border:0.5px, solid, black;
+        
+    }
+    th, td{
+        padding: 3px;
+        margin: 3px;
+    }
+    .expense-description{
+        text-align:left;
+    }
+    .modal {
+        display:none;
+        position:fixed;
+        z-index:1;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background-color:rgba(0,0,0,0.65);
+    }
+    .modal-content{
+        background-color:#fff;
+        position:absolute;
+        padding:auto;
+        width:80%;
+        max-width:500px;;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+    }
+    .modal .closebtn {
+        float:right;
+        font-weight:bold;
+        font-size: xx-large;
+        padding-right: 20px;
+        cursor:pointer;
+    }
+</style>
+
+<div style="text-align:center">
+    <h1> get all expenses </h1>
+
+    {% if message %}
+        <div style="color: green; font-weight: bold">
+            {{ message }}
+        </div><br>
+    {% endif%}
+
+    <div>
+        <table style="margin:auto; border-collapse:collapse">
+            <thead style="background-color:floralwhite; text-align:center">
+                <tr>
+                    <th> Num </th>
+                    <th> Date </th>
+                    <th> Category </th>
+                    <th> Payment </th>
+                    <th> Amount </th>
+                    <th> Desciption </th>
+                    <th> L </th>
+                    <th> buttons </th>
+                </tr>
+            </thead>
+
+            <tbody style="text-align:center">
+                {% for expense in all_expense %}
+                <tr class="expense">
+                    <td> {{ loop.index }} </td>
+                    <td> {{ expense.Date }} </td>
+                    <td> {{ expense.Category }} </td>
+                    <td> {{ expense.Payment }} </td>
+                    <td><b> {{ expense.Amount }} </b></td>
+                    <td class="expense-description"> {{ expense.Description }} </td>
+                    <td> {{ expense.L }} </td>
+                    
+                    <!-- 
+                    the {{loop.index}} usage is from Jinja and is processed server-side 
+                    so it will not be recognized by the linter until the template is rendered
+                    -->
+                    <td><button type="button" onclick="getExpense( '{{loop.index}}' )"> Details </button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+    <!--button type="button" onclick="openModal()"> Open modal </button-->
+    
+    <div class="modal" id="modal">
+        <span class="closebtn" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <h2 style="text-align:center"> modal content </h2>
+            
+            <p id="expense-id"></p>
+            <!--
+            <p id="expense-date"></p>
+            <p id="expense-category"></p>
+            <p id="expense-payment"></p>
+            <p id="expense-amount"></p>
+            <p id="expense-description"></p>
+            <p id="expense-l"></p>
+            -->
+            <form id="edit-expense-form" action="/expenses" method="POST">
+                
+                <input type="hidden" id="expense-index" name="index">
+
+                <label for="expense-date"> Date </label>
+                <input type="date" id="expense-date" name="date" required><br><br>
+            
+                <label for="expense-category"> Category </label>
+                <select id="expense-category" name="category" required>
+                    <option value=""> - </option>
+                    <option value="Food"> Food </option>
+                    <option value="Transport"> Transport </option>
+                    <option value="Utilities"> Utilities </option>
+                    <option value="Entertainment"> Entertainment </option>
+                    <option value="Health"> Health </option>
+                    <option value="Other"> Other </option>
+                </select><br><br>
+            
+                <label for="expense-method"> Paying Method </label>
+                <select id="expense-method" name="method" required>
+                    <option value=""> - </option>
+                    <option value="Cash"> Cash </option>
+                    <option value="Card"> Card </option>
+                    <option value="Apple Pay"> Apple Pay </option>
+                    <option value="Line Pay"> Line Pay </option>
+                    <option value="Easy Card"> Easy Card </option>
+                </select><br><br>
+            
+                <label for="expense-amount"> Amount </label>
+                <input type="number" id="expense-amount" name="amount" step="0.1" required><br><br>
+                
+                <label for="expense-description"> Description </label>
+                <input type="text" id="expense-description" name="description" required><br><br>
+                
+                <label for="expense-l"> For L </label>
+                <input type="number" id="expense-l" name="l" step="0.1"><br><br>
+                
+                <input type="submit" value="Edit">
+            </form><br>
+        </div>
+    </div>
+
+    <br>
+    <a href="/"><button> back to Home </button></a>
+</div>
+
+<script type="application/json" id="allexpense-data">
+    {{all_expense | tojson}}
+</script>
+<script>
+    const expenses = JSON.parse(document.getElementById("allexpense-data").textContent);
+    /*console.log(expenses, typeof(expenses));*/
+
+    function openModal(){
+        document.getElementById("modal").style.display = 'block';
+    }
+    function closeModal(){
+        document.getElementById("modal").style.display = 'none';
+    }
+    window.onclick = function(event){
+        if(event.target === document.getElementById('modal')){
+            closeModal();
+        }
+    }
+    function getExpense(id){
+        const index = id-1
+        const expense = expenses[index];
+        
+        document.getElementById("expense-id").textContent = `Expense ID: ${id}`;
+
+        document.getElementById("expense-index").value = index;
+        document.getElementById("expense-date").value = expense.Date;
+        document.getElementById("expense-category").value = expense.Category;
+        document.getElementById("expense-method").value = expense.Payment;
+        document.getElementById("expense-amount").value = expense.Amount;
+        document.getElementById("expense-description").value = expense.Description;
+        document.getElementById("expense-l").value = expense.L || "";
+        
+        openModal();
+    }
+
+</script>
+
+{% endblock %}

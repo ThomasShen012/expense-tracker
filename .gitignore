@@ -1,0 +1,13 @@
+#ignore _pycache_/
+__pycache__/
+
+#ignore virtual environment
+env/
+
+#ignore testing files(rest.http, test.py)
+rest.http
+test.py
+
+#ignore sensitive info(rare-habitat....json)
+rare-habitat-442607-u2-524a233c38ab.json
+
