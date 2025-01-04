@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "rare-habitat-442607-u2",
+  "private_key_id": "524a233c38ab9305dd1fbe4416a039543c224f76",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDKuvprZ9Trqkio\nMDRZ/riEF4TdUwRqEt/kfbBqBmTuugoIZYFDhvoywND460ZZfkjM6xpGiql19o8x\nbMFletxSBWBbzDl3/e80I9qlLSDukFW8ueLf1d+MeVVieLJB3HxXrINRdGrFDUfY\ndsHWzXwN9da+OfKXJ0CJ0qoDcLtGWTkRyf3s6kfmUsTX5ysU/VC8WrH1tgiaE2MS\n2hc4pC7YcZ0BFb2z9YqBMDo24YW0TaE3RDOugU5AI5Gb7MasbzcmEeX+eDDEUwWJ\nkYHFW4J9UsOxp76yxn6aS+2QnugFzLdMJVjol48A5O2LLBL0SGHXPfgdJDwzxxrI\nsDb8PLX9AgMBAAECggEAVLqh18rtF9OzCywebTCC8J4dxxyfvy+FSKtpVF64x3eU\not69kDn1Dso8bJR0cgnQJmjqMepZGfbC8Q65o46eT1903tjzed11IG8NvjQmy94i\nHz73fcKW7FB3qbC1G8apZ0EwHxaPWy0KRoOXzw1RmEoThqyUYa0jkZasvMRcWPFI\ntK9LEBqEWPUdy+HfY+V6p9eRbOaGpFtmDvAzDdUzUBFIbnFCqLbLvYvcHkZPUlc4\n8SFPx0YEP/ma9hILDfr3Ar/6wIi5TKjjrknU5qem3RWDFSQyJByZJ8mXZeUvRXKR\n/TaCFqWc/7R3ODRozQRJJfX/9MafFVMCf6NOQTF6FwKBgQD/goss0PJY5v71RFtL\nS4gpABRnFRFhB5e9XDcCO5n3RPhOeDPvveCRjQQTqw0DoAhBM/d824LpOfviZ9RO\n9gZzvFqzn9ORuq/OtZ/2pQAfjPqRw7VDKs9VMNPAyECPpYZo6pMOA6lQf6MbX1SA\n6Cxm7m0bwo+Yyn3T1D450GCqOwKBgQDLHoUDvmuqKErmxOvc5EmVDmJsIJYdslNS\nzvyGtZXD804o2SkM7EJmjzVC/Y1NaU2jo7QJ1lim1NrHZkHVTTKbMs5gJdTt3sJ1\n2mINcl2bJmZowhZJHUB1KjTnNXsw58dje4HqPh7cvobznr6OGDF5nqM0b34EVAu/\nVq1BP/TlJwKBgQC7JWDPCJQZbcgc2V6M/dvTPA21mwbJrQgFWH+qEQGqzUeaIgzY\ncpkDwufTiBvWJecl6uxA9X8jWKcXo7krxKPhLXq5yjzqpnSS0RFDVIOMmHQHQ/OG\nKNsHqOXQdFxlWnXibr4bK69eGL7dE6wPZv7uvYAJLy6CWP5kozaYnfnPdQKBgDt4\nMBGsivFC4ss2FKiT3kdZ8s8dq1X+hA7Ws3DtcW/xqIylKDO0aKyGeV2nxttHXYfv\nwiKvMz2FTJjdA6Fj/NEbyvizmugaNG01B0hQl795OrqpOMUnX1vug5a+PddPxT0H\nSD5A+eA/mFtzuu73fmTRYY9UpVy3Dslyoz9bbmQ5AoGAGq8fa4VOfhyZpHDblprw\no7J+wXuHlQ+2Z0MZn670qWEgdouQIt2H5Ow03sr8/XcWX1jGQiktfRF/kRTX5We5\nJZ2O6OJ/7AGETYbiL5mUL3VSHMKatY8HGIJxh4jlmSvkmYylNiMBLGYr7DkdR5Hh\nPJaffPT6YFlchSo9UdnojIs=\n-----END PRIVATE KEY-----\n",
+  "client_email": "fastapi-with-google-sheet@rare-habitat-442607-u2.iam.gserviceaccount.com",
+  "client_id": "100697910087883734666",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fastapi-with-google-sheet%40rare-habitat-442607-u2.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

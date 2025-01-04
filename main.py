@@ -71,6 +71,7 @@ def get_worksheet():
 
 ######
 '''
+#add column header to worksheet
 def add_column_with_header(worksheet, new_header):
     current_cols = worksheet.col_count
     current_rows = worksheet.row_count
