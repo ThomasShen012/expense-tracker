@@ -125,8 +125,8 @@
                     <option value="Other"> Other </option>
                 </select><br><br>
             
-                <label for="expense-method"> Paying Method </label>
-                <select id="expense-method" name="method" required>
+                <label for="expense-payment"> Paying Method </label>
+                <select id="expense-payment" name="payment" required>
                     <option value=""> - </option>
                     <option value="Cash"> Cash </option>
                     <option value="Card"> Card </option>
@@ -172,15 +172,19 @@
         }
     }
     function getExpense(id){
+
+        // id: starts w/ 1 ; index: starts w/ 0
         const index = id-1
-        const expense = expenses[index];
+        const expense = expenses[index]
+        console.log(index)
         
+        // id = the kth element
         document.getElementById("expense-id").textContent = `Expense ID: ${id}`;
 
         document.getElementById("expense-index").value = index;
         document.getElementById("expense-date").value = expense.Date;
         document.getElementById("expense-category").value = expense.Category;
-        document.getElementById("expense-method").value = expense.Payment;
+        document.getElementById("expense-payment").value = expense.Payment;
         document.getElementById("expense-amount").value = expense.Amount;
         document.getElementById("expense-description").value = expense.Description;
         document.getElementById("expense-l").value = expense.L || "";

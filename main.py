@@ -46,7 +46,7 @@ class PaymentMethod(str, Enum):
 class Expense(BaseModel):
     date: date
     category: Category 
-    method: PaymentMethod
+    payment: PaymentMethod
     amount: int  
     description: str
     l: float
@@ -108,7 +108,7 @@ async def add_expense(
     request: Request,
     date: date = Form(...),
     category: Category = Form(...),
-    method: PaymentMethod = Form(...),
+    payment: PaymentMethod = Form(...),
     amount: float = Form(...),
     description: str = Form(...),
     l: str = Form(...)
@@ -123,7 +123,7 @@ async def add_expense(
     new_data = [
         date.strftime("%Y-%m-%d"), 
         category.value, 
-        method.value, 
+        payment.value, 
         amount, 
         description,
         l
@@ -152,7 +152,7 @@ async def update_expense(
     index: int = Form(...),
     date: date = Form(...),
     category: Category = Form(...),
-    method: PaymentMethod = Form(...),
+    payment: PaymentMethod = Form(...),
     amount: float = Form(...),
     description: str = Form(...),
     l: str = Form(...)
@@ -165,38 +165,49 @@ async def update_expense(
     worksheet = get_worksheet()
     expense_data = worksheet.get_all_records()
 
-    expense_data.sort(key=lambda x: datetime.strptime(x["Date"], "%Y-%m-%d"), reverse=False)
+    # sort the data but also store its original row w/ enumerate
+    ####  IMPORTANT  ####
+    expense_data = sorted(
+        enumerate(expense_data, start=2),
+        key=lambda x: datetime.strptime(x[1]["Date"], "%Y-%m-%d")
+    )
+
+    # get the original row number of the data
+    original_row = expense_data[index][0]
+    print(original_row)
 
     updated_data = {
-        "Date": date.strftime("%Y-%m-%d"), 
+        "Date": date.strftime("%Y-%m-%d"),
         "Category": category.value, 
-        "Method": method.value, 
+        "Payment": payment.value, 
         "Amount": amount, 
         "Description": description,
         "L": l
     }
-    print(updated_data)
 
-    expense_data[index].update(updated_data)
-    print(f"A{index + 2}:F{index + 2}")
-
-    '''
-    worksheet.update(f"A{index + 2}:F{index + 2}", [[
+    # update data in the worksheet
+    worksheet.update(f"A{original_row}:F{original_row}", [[
         updated_data["Date"],
         updated_data["Category"],
-        updated_data["Method"],
+        updated_data["Payment"],
         updated_data["Amount"],
         updated_data["Description"],
-        updated_data["L"],
+        updated_data["L"]
     ]])
-    '''
+
+    # update data in the fetched list
+    expense_data[index][1].update(updated_data)
+
+    # remove original row num to return the data
+    ####  IMPORTANT  ####
+    expense_data = [entry[1] for entry in expense_data]
+
 
     return templates.TemplateResponse(
         "get_all.html",
         {
             "request": request, 
-            "message": "Date updated successfully", 
-            "data": updated_data,
+            "message": "Date updated successfully",
             "all_expense": expense_data
         }
     )
