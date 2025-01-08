@@ -28,7 +28,7 @@ headers = ["Date", "Category", "Payment", "Amount" , "Description", "L"]
 
 class Category(str, Enum):
     FOOD = "Food"
-    TRANSPORT = "Transport"
+    TRANSPORTATION = "Transportation"
     UTILITIES = "Utilities"
     ENTERTAINMENT = "Entertainment"
     HEALTH = "Health"
