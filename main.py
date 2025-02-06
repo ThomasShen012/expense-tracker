@@ -87,9 +87,59 @@ def add_column_with_header(worksheet, new_header):
         worksheet.update_cell(row, new_column_index, "")
 
 worksheet = get_worksheet()
-add_column_with_header(worksheet, "L")
+#add_column_with_header(worksheet, "L")
+
+#insert id col for db
+def add_column(worksheet, header):
+
+    row_num = len(worksheet.col_values(3))
+
+    #get the data's row num instead of the sheet's row num
+    print(row_num)
+
+    new_col = [[header]]
+
+    original_header = worksheet.row_values(1)
+    if header not in original_header:
+        worksheet.insert_cols(new_col, 1)
+    else:
+        print(f"Already a column called '{header}'")
+
+    id_list = []
+    id_list = [[str(index + 1)] for index in range(row_num-1)]
+    print(id_list)
+
+    #print(worksheet.col_values(1))
+
+    id_range = f"A2:A{row_num}"
+    
+    worksheet.batch_update(
+        [{
+            'range': id_range,
+            'values': id_list
+        }])
+    
+
+def delete_column(worksheet):
+    header = worksheet.row_values(1)
+    print(header)
+    print(len(header))
+
+    for index in range(len(header)):
+        print("index: ", index)
+        print("header[index]: ", header[index])
+
+        if header[index] not in ['ID', 'Date', 'Category', 'Payment', 'Amount', 'Description', 'L']:
+            worksheet.delete_columns(index+1)
+
+    #worksheet.delete_columns(1)
+
+#worksheet = get_worksheet()
+#add_column(worksheet, "ID")
+#delete_column(worksheet)
 '''
-#####
+
+
 
 
 ### routes
