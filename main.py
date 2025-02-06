@@ -24,7 +24,7 @@ credentials = Credentials.from_service_account_file(Json, scopes=SCOPES)
 gc = gspread.authorize(credentials)
 sheet = gc.open_by_key("1edSXPXLFtcT7DYKZc4A6XFEiZGbWG_5MYHrhc0GIg2M")
 worksheet_title = "Expenses"
-headers = ["Date", "Category", "Payment", "Amount" , "Description", "L"]
+headers = ["ID", "Date", "Category", "Payment", "Amount" , "Description", "L"]
 
 class Category(str, Enum):
     FOOD = "Food"
@@ -148,7 +148,6 @@ def delete_column(worksheet):
 async def home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
-
 @app.get("/add", response_class=HTMLResponse)
 async def new_expense(request: Request):
     return templates.TemplateResponse("add.html", {"request": request})
@@ -170,7 +169,16 @@ async def add_expense(
     else:
         l == float(l)
     
+    id_values = worksheet.col_values(1)
+
+    if len(id_values) > 1:
+        last_id = int(id_values[-1])
+        new_id = last_id + 1
+    else:
+        new_id = 1
+
     new_data = [
+        new_id,
         date.strftime("%Y-%m-%d"), 
         category.value, 
         payment.value, 
@@ -266,6 +274,15 @@ async def update_expense(
 
 @app.get("/test")
 async def test_func():
+    worksheet = get_worksheet()
+    id_values = worksheet.col_values(1)
+
+    if len(id_values) > 1:
+        last_id = int(id_values[-1])
+        new_id = last_id + 1
+    else:
+        new_id = 1
+    print(new_id)
     return {"data": "testing gateway"}
 
 
