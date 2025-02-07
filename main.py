@@ -275,14 +275,8 @@ async def update_expense(
 @app.get("/test")
 async def test_func():
     worksheet = get_worksheet()
-    id_values = worksheet.col_values(1)
-
-    if len(id_values) > 1:
-        last_id = int(id_values[-1])
-        new_id = last_id + 1
-    else:
-        new_id = 1
-    print(new_id)
-    return {"data": "testing gateway"}
+    expense_data = worksheet.get_all_records()
+    expense_data.sort(key=lambda x: datetime.strptime(x["Date"], "%Y-%m-%d"), reverse=False)
+    return {"data": expense_data}
 
 

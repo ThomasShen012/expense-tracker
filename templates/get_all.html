@@ -68,11 +68,13 @@
         </div><br>
     {% endif%}
 
-    <div >
+    <!-- expenses table -->
+    <div>
         <table>
             <thead>
                 <tr>
                     <th> Num </th>
+                    <th> ID </th>
                     <th> Date </th>
                     <th> Category </th>
                     <th> Payment </th>
@@ -87,6 +89,7 @@
                 {% for expense in all_expense %}
                 <tr class="expense">
                     <td> {{ loop.index }} </td>
+                    <td> {{ expense.ID }} </td>
                     <td> {{ expense.Date }} </td>
                     <td> {{ expense.Category }} </td>
                     <td> {{ expense.Payment }} </td>
@@ -98,34 +101,25 @@
                     the {{loop.index}} usage is from Jinja and is processed server-side 
                     so it will not be recognized by the linter until the template is rendered
                     -->
-                    <td><button type="button" onclick="getExpense( '{{loop.index}}' )"> Details </button></td>
+                    <td><button type="button" onclick="getExpense( '{{ loop.index }}' )"> Details </button></td>
                 </tr>
                 {% endfor %}
             </tbody>
 
         </table>
     </div>
-
-    <!--button type="button" onclick="openModal()"> Open modal </button-->
     
+    <!-- expense modal -->
     <div class="modal" id="modal">
         <span class="closebtn" onclick="closeModal()">&times;</span>
         <div class="modal-content">
             <h2 style="text-align:center"> modal content </h2>
             
-            <p id="expense-id"></p>
-            <!--
-            <p id="expense-date"></p>
-            <p id="expense-category"></p>
-            <p id="expense-payment"></p>
-            <p id="expense-amount"></p>
-            <p id="expense-description"></p>
-            <p id="expense-l"></p>
-            -->
+            <div> Expense ID: <p id="expense-id"></p></div>
+            <div> Expense index: <p id="expense-index" name="index"></p></div>
+
             <form id="edit-expense-form" action="/expenses" method="POST">
                 
-                <input type="hidden" id="expense-index" name="index">
-
                 <label for="expense-date"> Date </label>
                 <input type="date" id="expense-date" name="date" required><br><br>
             
@@ -186,23 +180,16 @@
             closeModal();
         }
     }
-    function getExpense(id){
+    function getExpense(index){
 
-        // id: starts w/ 1 ; index: starts w/ 0
-        const index = id-1
-        const expense = expenses[index]
-        console.log(index)
-        
-        // id = the kth element
-        document.getElementById("expense-id").textContent = `Expense ID: ${id}`;
-
-        document.getElementById("expense-index").value = index;
-        document.getElementById("expense-date").value = expense.Date;
-        document.getElementById("expense-category").value = expense.Category;
-        document.getElementById("expense-payment").value = expense.Payment;
-        document.getElementById("expense-amount").value = expense.Amount;
-        document.getElementById("expense-description").value = expense.Description;
-        document.getElementById("expense-l").value = expense.L || "";
+        document.getElementById("expense-index").textContent = index;
+        document.getElementById("expense-id").textContent = expenses[index-1].ID;
+        document.getElementById("expense-date").value = expenses[index-1].Date;
+        document.getElementById("expense-category").value = expenses[index-1].Category;
+        document.getElementById("expense-payment").value = expenses[index-1].Payment;
+        document.getElementById("expense-amount").value = expenses[index-1].Amount;
+        document.getElementById("expense-description").value = expenses[index-1].Description;
+        document.getElementById("expense-l").value = expenses[index-1].L || "";
         
         openModal();
     }
