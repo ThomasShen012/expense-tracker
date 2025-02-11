@@ -74,7 +74,7 @@
             <thead>
                 <tr>
                     <th> Num </th>
-                    <th> ID </th>
+                    <th hidden> ID </th>
                     <th> Date </th>
                     <th> Category </th>
                     <th> Payment </th>
@@ -89,7 +89,7 @@
                 {% for expense in all_expense %}
                 <tr class="expense">
                     <td> {{ loop.index }} </td>
-                    <td> {{ expense.ID }} </td>
+                    <td hidden> {{ expense.ID }} </td>
                     <td> {{ expense.Date }} </td>
                     <td> {{ expense.Category }} </td>
                     <td> {{ expense.Payment }} </td>
@@ -113,13 +113,16 @@
     <div class="modal" id="modal">
         <span class="closebtn" onclick="closeModal()">&times;</span>
         <div class="modal-content">
-            <h2 style="text-align:center"> modal content </h2>
-            
-            <div> Expense ID: <p id="expense-id"></p></div>
-            <div> Expense index: <p id="expense-index" name="index"></p></div>
+            <h2 style="text-align:center"> Edit this expense </h2>
 
             <form id="edit-expense-form" action="/expenses" method="POST">
                 
+                <label for="expense-id" hidden> Expense ID </label>
+                <input type="text" id="expense-id" name="id" readonly hidden>
+
+                <label for="expense-index" hidden> Expense index </label>
+                <input type="text" id="expense-index" name="index" disabled hidden>
+
                 <label for="expense-date"> Date </label>
                 <input type="date" id="expense-date" name="date" required><br><br>
             
@@ -182,8 +185,8 @@
     }
     function getExpense(index){
 
-        document.getElementById("expense-index").textContent = index;
-        document.getElementById("expense-id").textContent = expenses[index-1].ID;
+        document.getElementById("expense-index").value = index;
+        document.getElementById("expense-id").value = expenses[index-1].ID;
         document.getElementById("expense-date").value = expenses[index-1].Date;
         document.getElementById("expense-category").value = expenses[index-1].Category;
         document.getElementById("expense-payment").value = expenses[index-1].Payment;

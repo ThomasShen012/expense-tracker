@@ -8,6 +8,7 @@ from enum import Enum
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+import re
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -164,10 +165,10 @@ async def add_expense(
 ):
     worksheet = get_worksheet()
 
-    if l == "":
-        l == None
+    if l == "" or l == "0":
+        l = None
     else:
-        l == float(l)
+        l = float(l)
     
     id_values = worksheet.col_values(1)
 
@@ -207,7 +208,7 @@ async def getall(request: Request):
 @app.post("/expenses", response_class=HTMLResponse)
 async def update_expense(
     request: Request,
-    index: int = Form(...),
+    id: int = Form(...),
     date: date = Form(...),
     category: Category = Form(...),
     payment: PaymentMethod = Form(...),
@@ -215,14 +216,45 @@ async def update_expense(
     description: str = Form(...),
     l: str = Form(...)
 ):
-    if l == "":
-        l == None
+    if l == "" or l == "0":
+        l = None
     else:
-        l == float(l)
+        l = float(l)
 
     worksheet = get_worksheet()
-    expense_data = worksheet.get_all_records()
+    
+    updated_data = {
+        "Date": date.strftime("%Y-%m-%d"),
+        "Category": category.value, 
+        "Payment": payment.value, 
+        "Amount": amount, 
+        "Description": description,
+        "L": l
+    }
 
+    print(f"updated data: {updated_data}")
+
+    # get row from id
+    cell = worksheet.find(str(id), in_column=1)
+    if not cell:
+        raise HTTPException(status_code=404, detail=f"no cell found on {id}")
+    
+    row_data = worksheet.row_values(cell.row)
+    print(f"found ID {id} at {cell.row}")
+    print(f"original data: {row_data}")
+
+    # update that row
+    worksheet.update(f"B{cell.row}:F{cell.row}", [[
+        updated_data["Date"],
+        updated_data["Category"],
+        updated_data["Payment"],
+        updated_data["Amount"],
+        updated_data["Description"],
+        updated_data["L"]
+    ]])
+    
+
+    '''
     # sort the data but also store its original row w/ enumerate
     ####  IMPORTANT  ####
     expense_data = sorted(
@@ -259,7 +291,10 @@ async def update_expense(
     # remove original row num to return the data
     ####  IMPORTANT  ####
     expense_data = [entry[1] for entry in expense_data]
+    '''
 
+    expense_data = worksheet.get_all_records()
+    expense_data.sort(key=lambda x: datetime.strptime(x["Date"], "%Y-%m-%d"), reverse=False)
 
     return templates.TemplateResponse(
         "get_all.html",
@@ -272,11 +307,23 @@ async def update_expense(
 
 
 
+
+
 @app.get("/test")
 async def test_func():
     worksheet = get_worksheet()
     expense_data = worksheet.get_all_records()
-    expense_data.sort(key=lambda x: datetime.strptime(x["Date"], "%Y-%m-%d"), reverse=False)
-    return {"data": expense_data}
+    criteria_re = re.compile(r'15.*')
+    id=23
+    cell = worksheet.find(str(id), in_column=1)
+    if cell:
+        print(f"found ID {id} at {cell.row}")
+        row_data = worksheet.row_values(cell.row)
+        print(row_data)
+    else:
+        print(f"no cell found on {id}")
+
+    print(expense_data[id])
+    return {"data": row_data}
 
 
