@@ -169,8 +169,8 @@ async def add_expense(
         l = None
     else:
         l = float(l)
-    
-    id_values = worksheet.col_values(1)
+
+    id_values = worksheet.col_values(1)[1:] ### slicing the header
 
     if len(id_values) > 1:
         last_id = int(id_values[-1])
@@ -237,6 +237,7 @@ async def update_expense(
     # get row from id
     cell = worksheet.find(str(id), in_column=1)
     if not cell:
+        ### raise can stop execution(like return)
         raise HTTPException(status_code=404, detail=f"no cell found on {id}")
     
     row_data = worksheet.row_values(cell.row)
@@ -313,17 +314,20 @@ async def update_expense(
 async def test_func():
     worksheet = get_worksheet()
     expense_data = worksheet.get_all_records()
+
+    id_values = worksheet.col_values(1)[1:] ### slicing the header
+    max_id = max(id_values)
+    print(id_values)
+    print(max_id)
+
     criteria_re = re.compile(r'15.*')
     id=23
     cell = worksheet.find(str(id), in_column=1)
     if cell:
-        print(f"found ID {id} at {cell.row}")
         row_data = worksheet.row_values(cell.row)
-        print(row_data)
     else:
         print(f"no cell found on {id}")
 
-    print(expense_data[id])
-    return {"data": row_data}
+    return {"data": max_id}
 
 
