@@ -1,6 +1,7 @@
-an fastapi based expense tracker
-just for learning
+<h2>a fastapi based expense tracker</h2>
+just for learning<br><br>
 
-frontend: pure html with almost zero design
-backend: fastapi
-database: google spreadsheet(which i regret using)
+frontend: pure html with almost zero design<br>
+backend: fastapi<br>
+database: google spreadsheet (which i now regret using)
+
